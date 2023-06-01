@@ -258,7 +258,7 @@ class Action
 				$data = " order_id = '$id' ";
 				$data .= ", product_id = '" . $row['product_id'] . "' ";
 				$data .= ", qty = '" . $row['qty'] . "' ";
-				// $data .= ", user ='" . $row['user_id'] . " ";
+				$data .= ", user = '" . $row['user_id'] . "' ";
 				$save2 = $this->db->query("INSERT INTO order_list set " . $data);
 				if ($save2) {
 					$this->db->query("DELETE FROM cart where id= " . $row['id']);
