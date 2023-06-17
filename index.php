@@ -122,6 +122,6 @@ foreach ($query as $key => $value) {
     <?php include('footer.php') ?>
 </body>
 
-<?php $conn->close() ?>
+
 
 </html>
