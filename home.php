@@ -101,6 +101,7 @@
              padding: 80px 0;
              display: flex;
              flex-wrap: wrap;
+             flex-direction: column;
              justify-content: center;
              align-items: center;
              overflow-x: hidden;

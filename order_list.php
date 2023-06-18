@@ -93,8 +93,8 @@ echo $_SESSION['login_user_id'];
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4"><b>Items</b></div>
-                                <div class="col-md-4"><b>Status</b></div>
-                                <div class="col-md-4 text-right"><b>Total</b></div>
+                                <div class="col-md-4"><b>Total</b></div>
+                                <div class="col-md-4 text-right"><b>Status</b></div>
                             </div>
                         </div>
                     </div>
