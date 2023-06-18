@@ -93,15 +93,103 @@
      <section class="page-section" id="menu">
          <!-- Existing code for menu items -->
      </section>
+     <style>
+         /* Popular Menu Items Section */
+         /* Popular Menu Items Section */
+         #popular-menu {
+             background-color: #f8f9fa;
+             padding: 80px 0;
+             display: flex;
+             flex-wrap: wrap;
+             justify-content: center;
+             align-items: center;
+             overflow-x: hidden;
+         }
 
-     <div>
+         #popular-menu .section-title {
+             text-align: center;
+             margin-bottom: 60px;
+         }
+
+         #popular-menu .menu-item {
+             background-color: #ffffff;
+             border: 1px solid #dee2e6;
+             border-radius: 0;
+             padding: 20px;
+             text-align: center;
+             margin: 20px;
+             display: flex;
+             flex-direction: column;
+             justify-content: center;
+             align-items: center;
+         }
+
+         #popular-menu .menu-item img {
+             width: 100%;
+             height: 100%;
+             border-radius: 5px;
+             object-fit: cover;
+         }
+
+         /* Rest of the CSS styles */
+
+
+         #popular-menu .menu-item h5 {
+             font-size: 20px;
+             font-weight: bold;
+             margin-bottom: 10px;
+         }
+
+         #popular-menu .menu-item p {
+             font-size: 16px;
+             color: #777777;
+             margin-bottom: 20px;
+         }
+
+         #popular-menu .menu-item .view_prod {
+             background-color: #343a40;
+             color: #ffffff;
+             border-radius: 20px;
+             padding: 10px 20px;
+             font-size: 14px;
+             transition: background-color 0.3s ease;
+         }
+
+         #popular-menu .menu-item .view_prod:hover {
+             background-color: #212529;
+         }
+
+         @media (max-width: 767.98px) {
+             #popular-menu .section-title {
+                 margin-bottom: 30px;
+             }
+
+             #popular-menu .menu-item {
+                 padding: 15px;
+             }
+
+             #popular-menu .menu-item img {
+                 margin-bottom: 15px;
+             }
+
+             #popular-menu .menu-item h5 {
+                 font-size: 18px;
+             }
+
+             #popular-menu .menu-item p {
+                 font-size: 14px;
+                 margin-bottom: 15px;
+             }
+         }
+     </style>
+     <div id="popular-menu" class="section">
          <div class="row">
              <div class="col-lg-12">
                  <h2>Popular Menu Items</h2>
                  <hr class="divider">
              </div>
          </div>
-         <div class="row">
+         <div class="row ">
              <?php
                 include 'admin/db_connect.php';
 
