@@ -13,6 +13,7 @@
 <?php
 echo $_SESSION['login_user_id'];
 ?>
+
 <style>
     .card p {
         margin: unset;
@@ -83,7 +84,6 @@ echo $_SESSION['login_user_id'];
         margin-bottom: 5px;
     }
 </style>
-
 <section class="page-section" id="menu">
     <div class="container">
         <div class="row">
@@ -94,7 +94,8 @@ echo $_SESSION['login_user_id'];
                             <div class="row">
                                 <div class="col-md-4"><b>Items</b></div>
                                 <div class="col-md-4"><b>Total</b></div>
-                                <div class="col-md-4 text-right"><b>Status</b></div>
+                                <div class="col-md-2 text-right"><b>Status</b></div>
+                                <div class="col-md-2 text-right"><b>Delivery Tracking</b></div>
                             </div>
                         </div>
                     </div>
@@ -134,8 +135,7 @@ echo $_SESSION['login_user_id'];
                                     <p><b><small>Unit Price: <?php echo number_format($row['price'], 2) ?></small></b></p>
                                     <p><small>QTY: <?php echo $row['qty'] ?></small></p>
                                 </div>
-                                <div class="col-md-4 order-status">
-
+                                <div class="col-md-2 order-status">
                                     <?php
                                     $i = 1;
                                     include 'admin/db_connect.php';
@@ -149,6 +149,19 @@ echo $_SESSION['login_user_id'];
                                         <?php endif; ?>
                                     <?php endwhile; ?>
                                 </div>
+                                <div class="col-md-2 order-delivery">
+                                    <?php
+                                    include 'admin/db_connect.php';
+                                    $order_id = $row['order_id'];
+                                    $qry = $conn->query("SELECT delivery_tracking FROM orders WHERE id = $order_id");
+                                    if ($qry->num_rows > 0) {
+                                        $order = $qry->fetch_assoc();
+                                        $delivery_tracking = $order['delivery_tracking'];
+                                        echo $delivery_tracking;
+                                    }
+                                    ?>
+                                </div>
+
                                 <div class="col-md-4 text-right">
                                     <b>
                                         <large><?php echo number_format($subtotal, 2) ?></large>
@@ -178,7 +191,3 @@ echo $_SESSION['login_user_id'];
         </div>
     </div>
 </section>
-
-<style>
-    /* CSS styles */
-</style>
