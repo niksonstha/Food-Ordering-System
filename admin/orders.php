@@ -60,7 +60,7 @@ $qry = $conn->query("SELECT * FROM orders");
 						// Determine the delivery process text based on the presence of delivery tracking information
 						// $deliveryProcess = !empty($deliveryTracking) ? 'In Transit' : 'Not Shipped';
 						if (empty($deliveryTracking)) {
-							$deliveryTracking = "On Process";
+							$deliveryTracking = "Order placed";
 						}
 						// Check if the current order is the one being updated on the view_order.php page
 						$isUpdatedOrder = isset($_POST['order_id']) && $_POST['order_id'] == $row['id'];

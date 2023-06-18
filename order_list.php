@@ -15,6 +15,10 @@ echo $_SESSION['login_user_id'];
 ?>
 
 <style>
+    .page-section {
+        max-width: 100%;
+    }
+
     .card p {
         margin: unset;
     }
@@ -83,6 +87,11 @@ echo $_SESSION['login_user_id'];
     .order-item .order-total p {
         margin-bottom: 5px;
     }
+
+    .page-section .container {
+        max-width: 1200px;
+        /* Set your desired width here */
+    }
 </style>
 <section class="page-section" id="menu">
     <div class="container">
@@ -135,7 +144,7 @@ echo $_SESSION['login_user_id'];
                                     <p><b><small>Unit Price: <?php echo number_format($row['price'], 2) ?></small></b></p>
                                     <p><small>QTY: <?php echo $row['qty'] ?></small></p>
                                 </div>
-                                <div class="col-md-2 order-status">
+                                <div class="col-md-2 order-status ">
                                     <?php
                                     $i = 1;
                                     include 'admin/db_connect.php';
@@ -145,11 +154,11 @@ echo $_SESSION['login_user_id'];
                                     ?>
                                             <p class="text-success"><b>Confirmed</b></p>
                                         <?php else : ?>
-                                            <p class="text-secondary"><b>For Verification</b></p>
+                                            <p class="text-secondary" style="white-space: nowrap;"><b>For Verification</b></p>
                                         <?php endif; ?>
                                     <?php endwhile; ?>
                                 </div>
-                                <div class="col-md-2 order-delivery">
+                                <div class=" col-md-2 order-delivery">
                                     <?php
                                     include 'admin/db_connect.php';
                                     $order_id = $row['order_id'];
