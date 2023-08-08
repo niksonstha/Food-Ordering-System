@@ -1,4 +1,9 @@
 <!-- Masthead -->
+<?php
+include 'admin/db_connect.php';
+
+?>
+
 <header class="masthead">
     <div class="container h-100">
         <div class="row h-100 align-items-center justify-content-center text-center">
@@ -10,9 +15,7 @@
     </div>
 </header>
 
-<?php
-echo $_SESSION['login_user_id'];
-?>
+
 
 <style>
     .page-section {
@@ -96,7 +99,7 @@ echo $_SESSION['login_user_id'];
 <section class="page-section" id="menu">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-20">
                 <div class="sticky">
                     <div class="card">
                         <div class="card-body">
@@ -170,6 +173,21 @@ echo $_SESSION['login_user_id'];
                                     }
                                     ?>
                                 </div>
+                                <div class="col-md-2 text-right">
+                                    <b>Give Ratings</b>
+                                    <form action="submit_rating.php" method="post" class="submit-rating-form">
+                                        <input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
+                                        <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
+                                        <select name="rating" class="form-control">
+                                            <option value="5">5 Stars</option>
+                                            <option value="4">4 Stars</option>
+                                            <option value="3">3 Stars</option>
+                                            <option value="2">2 Stars</option>
+                                            <option value="1">1 Star</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
+                                    </form>
+                                </div>
 
                                 <div class="col-md-4 text-right">
                                     <b>
@@ -178,9 +196,14 @@ echo $_SESSION['login_user_id'];
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
 
+
+
                 <?php endwhile; ?>
+
 
                 <div class="row">
                     <div class="col-md-6">
@@ -199,4 +222,55 @@ echo $_SESSION['login_user_id'];
             </div>
         </div>
     </div>
+
+    <div id="toast-container" class="position-fixed top-0 end-0 p-3"></div>
+
 </section>
+
+
+<script>
+    $(document).ready(function() {
+        $('.submit-rating-form').submit(function(e) {
+            e.preventDefault(); // Prevent the form from submitting normally
+
+            var form = $(this);
+            var formData = form.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: form.attr('action'),
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        showToast('Rating submitted successfully.');
+                    } else {
+                        showToast('Error submitting rating.');
+                    }
+                },
+                error: function() {
+                    showToast('You have already rated this product for this order.');
+                }
+            });
+        });
+
+        function showToast(message) {
+            var toast = $('<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000" style="position: fixed; top: 20px; right: 20px;">' +
+                '<div class="toast-header">' +
+                '<strong class="mr-auto">Rating Submitted</strong>' +
+                '<small class="text-muted">Just now</small>' +
+                '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>' +
+                '</div>' +
+                '<div class="toast-body">' +
+                message +
+                '</div>' +
+                '</div>');
+
+            $('#toast-container').append(toast);
+
+            toast.toast('show');
+        }
+    });
+</script>
