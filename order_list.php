@@ -277,14 +277,14 @@ include 'admin/db_connect.php';
                         message = 'Rating submitted successfully.';
                         className = 'rating-success';
                     } else {
-                        message = 'Error submitting rating.';
+                        message = 'You have already rated this product for this order';
                         className = 'rating-error';
                     }
 
                     showToast(message, className);
                 },
                 error: function() {
-                    showToast('You have already rated this product for this order.', 'rating-error');
+                    showToast('Error submitting ratings', 'rating-error');
                 }
             });
         });
