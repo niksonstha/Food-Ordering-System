@@ -145,6 +145,8 @@
 		font-style: italic;
 	}
 </style>
+
+
 <script>
 	function displayImg(input, _this) {
 		if (input.files && input.files[0]) {

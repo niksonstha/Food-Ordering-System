@@ -94,65 +94,69 @@
          <!-- Existing code for menu items -->
      </section>
      <style>
-         /* Popular Menu Items Section */
-         /* Popular Menu Items Section */
-         #popular-menu {
-             background-color: #f8f9fa;
-             padding: 80px 0;
-             display: flex;
-             flex-wrap: wrap;
-             flex-direction: column;
-             justify-content: center;
-             align-items: center;
-             overflow-x: hidden;
-         }
+         /* Rest of your existing styles */
 
          #popular-menu .section-title {
              text-align: center;
-             margin-bottom: 60px;
+             margin-bottom: 40px;
+             font-size: 2em;
          }
 
          #popular-menu .menu-item {
-             background-color: #ffffff;
-             border: 1px solid #dee2e6;
-             border-radius: 0;
+             background-color: #f9f9f9;
+             border: none;
+             border-radius: 10px;
              padding: 20px;
              text-align: center;
-             margin: 20px;
-             display: flex;
-             flex-direction: column;
-             justify-content: center;
-             align-items: center;
+             box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+             transition: transform 0.2s, box-shadow 0.2s;
+             /* Increase width of the card */
+             width: 250px;
          }
 
-         #popular-menu .menu-item img {
-             width: 100%;
-             height: 100%;
-             border-radius: 5px;
+         #popular-menu .menu-item:hover {
+             transform: translateY(-5px);
+             box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+         }
+
+         #popular-menu .menu-item .card-img-top {
+             border-radius: 10px;
              object-fit: cover;
+             /* Adjusted property */
+             height: 180px;
+             /* Decrease the width to fit the card */
+             width: 100%;
          }
 
-         /* Rest of the CSS styles */
-
-
-         #popular-menu .menu-item h5 {
-             font-size: 20px;
+         #popular-menu .menu-item .card-title {
+             font-size: 1.2em;
              font-weight: bold;
-             margin-bottom: 10px;
+             margin-top: 10px;
          }
 
-         #popular-menu .menu-item p {
-             font-size: 16px;
-             color: #777777;
-             margin-bottom: 20px;
+         #popular-menu .menu-item .card-text {
+             font-size: 0.9em;
+             color: #777;
+             margin-top: 10px;
+         }
+
+         #popular-menu .menu-item .rating {
+             display: flex;
+             justify-content: center;
+             margin-top: 10px;
+             color: #FFD700;
+         }
+
+         #popular-menu .menu-item .rating i {
+             font-size: 1.2em;
          }
 
          #popular-menu .menu-item .view_prod {
              background-color: #343a40;
              color: #ffffff;
-             border-radius: 20px;
-             padding: 10px 20px;
-             font-size: 14px;
+             border-radius: 5px;
+             padding: 8px 16px;
+             font-size: 0.9em;
              transition: background-color 0.3s ease;
          }
 
@@ -160,74 +164,76 @@
              background-color: #212529;
          }
 
-         @media (max-width: 767.98px) {
-             #popular-menu .section-title {
-                 margin-bottom: 30px;
-             }
-
-             #popular-menu .menu-item {
-                 padding: 15px;
-             }
-
-             #popular-menu .menu-item img {
-                 margin-bottom: 15px;
-             }
-
-             #popular-menu .menu-item h5 {
-                 font-size: 18px;
-             }
-
-             #popular-menu .menu-item p {
-                 font-size: 14px;
-                 margin-bottom: 15px;
-             }
+         #item-img-holders {
+             height: 200px;
          }
      </style>
-     <div id="popular-menu" class="section">
-         <div class="row">
-             <div class="col-lg-12">
-                 <h2>Popular Menu Items</h2>
-                 <hr class="divider">
+
+     <!-- ... Existing code ... -->
+
+     <section id="popular-menu">
+         <div class="container">
+             <h2 class="section-title">Popular Food Items</h2>
+             <div class="row">
+                 <?php
+                    include 'admin/db_connect.php';
+
+                    // Query to get the top 4 popular food items based on highest average ratings
+                    $query = "SELECT pl.*, AVG(pr.rating) AS avgerage_ratings
+                      FROM product_list pl
+                      LEFT JOIN product_ratings pr ON pl.id = pr.product_id
+                      WHERE pr.rating IS NOT NULL
+                      GROUP BY pl.id
+                      HAVING avgerage_ratings > 0
+                      ORDER BY avgerage_ratings DESC
+                      LIMIT 4";
+
+                    $popular_items_query = $conn->query($query);
+
+                    if ($popular_items_query) {
+                        while ($popular_item = $popular_items_query->fetch_assoc()) :
+                    ?>
+                         <div class="col-lg-3 col-md-6 mb-4">
+                             <div class="card menu-item">
+                                 <div class="position-relative overflow-hidden" id="item-img-holders">
+                                     <img src="assets/img/<?php echo $popular_item['img_path'] ?>" class="card-img-top" alt="...">
+                                 </div>
+                                 <!-- ... existing code ... -->
+                                 <div class="card-body">
+                                     <h5 class="card-title"><?php echo $popular_item['name'] ?></h5>
+                                     <p class="card-text truncate"><?php echo substr($popular_item['description'], 0, 100) . '...'; ?></p>
+                                     <div class="rating">
+                                         <?php
+                                            $avg_rating = round($popular_item['avgerage_ratings'], 1);
+                                            for ($i = 1; $i <= 5; $i++) {
+                                                if ($i <= $avg_rating) {
+                                                    echo '<i class="fas fa-star filled"></i>';
+                                                } else {
+                                                    echo '<i class="fas fa-star"></i>';
+                                                }
+                                            }
+                                            ?>
+                                     </div>
+                                     <div class="text-center mt-3">
+                                         <button class="btn btn-sm btn-dark view_prod btn-block" data-id="<?php echo $popular_item['id'] ?>"><i class="fa fa-eye"></i> View</button>
+                                     </div>
+                                 </div>
+
+                             </div>
+                         </div>
+                 <?php
+                        endwhile;
+                    } else {
+                        echo "Query Error: " . $conn->error;
+                    }
+                    ?>
              </div>
          </div>
-         <div class="row ">
-             <?php
-                include 'admin/db_connect.php';
+     </section>
 
-                // Fetch the four most popular menu items
-                $query = "SELECT p.id, p.name, p.description, p.img_path, COUNT(o.order_id) as total_orders 
-                  FROM product_list p 
-                  INNER JOIN order_list o ON o.product_id = p.id
-                  GROUP BY p.id
-                  ORDER BY total_orders DESC
-                  LIMIT 4";
-                $result = $conn->query($query);
+     <!-- ... Remaining code ... -->
 
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<div class="col-lg-3 mb-3">';
-                        echo '<div class="card menu-item rounded-0">';
-                        echo '<div class="position-relative overflow-hidden" id="item-img-holder">';
-                        echo '<img src="assets/img/' . $row['img_path'] . '" class="card-img-top" alt="...">';
-                        echo '</div>';
-                        echo '<div class="card-body rounded-0">';
-                        echo '<h5 class="card-title">' . $row['name'] . '</h5>';
-                        echo '<p class="card-text truncate">' . $row['description'] . '</p>';
-                        echo '<div class="text-center">';
-                        echo '<button class="btn btn-sm btn-outline-dark view_prod btn-block" data-id="' . $row['id'] . '"><i class="fa fa-eye"></i> View</button>';
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</div>';
-                    }
-                } else {
-                    echo '<div class="col-lg-12 text-center">No popular menu items found.</div>';
-                }
 
-                $conn->close();
-                ?>
-         </div>
-     </div>
  </section>
  <script>
      $('.view_prod').click(function() {

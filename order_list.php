@@ -1,8 +1,9 @@
 <!-- Masthead -->
 <?php
-include 'admin/db_connect.php';
 
+include 'admin/db_connect.php';
 ?>
+
 
 <header class="masthead">
     <div class="container h-100">
@@ -95,6 +96,33 @@ include 'admin/db_connect.php';
         max-width: 1200px;
         /* Set your desired width here */
     }
+
+    .submit-rating-form {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .submit-rating-form select {
+        width: 100px;
+        margin-right: 10px;
+    }
+
+    .submit-rating-form button {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .rating-success {
+        color: #28a745;
+    }
+
+    .rating-error {
+        color: #dc3545;
+    }
 </style>
 <section class="page-section" id="menu">
     <div class="container">
@@ -178,6 +206,7 @@ include 'admin/db_connect.php';
                                     <form action="submit_rating.php" method="post" class="submit-rating-form">
                                         <input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
                                         <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
+                                        <input type="hidden" name="user_id" value="<?php echo $_SESSION['login_user_id']; ?>">
                                         <select name="rating" class="form-control">
                                             <option value="5">5 Stars</option>
                                             <option value="4">4 Stars</option>
@@ -227,7 +256,6 @@ include 'admin/db_connect.php';
 
 </section>
 
-
 <script>
     $(document).ready(function() {
         $('.submit-rating-form').submit(function(e) {
@@ -242,22 +270,29 @@ include 'admin/db_connect.php';
                 data: formData,
                 dataType: 'json',
                 success: function(response) {
+                    var message = '';
+                    var className = '';
+
                     if (response.status === 'success') {
-                        showToast('Rating submitted successfully.');
+                        message = 'Rating submitted successfully.';
+                        className = 'rating-success';
                     } else {
-                        showToast('Error submitting rating.');
+                        message = 'Error submitting rating.';
+                        className = 'rating-error';
                     }
+
+                    showToast(message, className);
                 },
                 error: function() {
-                    showToast('You have already rated this product for this order.');
+                    showToast('You have already rated this product for this order.', 'rating-error');
                 }
             });
         });
 
-        function showToast(message) {
-            var toast = $('<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000" style="position: fixed; top: 20px; right: 20px;">' +
+        function showToast(message, className) {
+            var toast = $('<div class="toast ' + className + '" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000" style="position: fixed; top: 80px; right: 20px;">' +
                 '<div class="toast-header">' +
-                '<strong class="mr-auto">Rating Submitted</strong>' +
+                '<strong class="mr-auto">' + (className === 'rating-success' ? 'Rating Submitted' : 'Rating Error') + '</strong>' +
                 '<small class="text-muted">Just now</small>' +
                 '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">' +
                 '<span aria-hidden="true">&times;</span>' +
